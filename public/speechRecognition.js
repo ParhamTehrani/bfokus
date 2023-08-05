@@ -1,27 +1,53 @@
-/* Check whether the SpeechRecognition or the webkitSpeechRecognition API is available on window and reference it */
-const recognitionSvc = window.SpeechRecognition || window.webkitSpeechRecognition;
+if ("webkitSpeechRecognition" in window) {
+    // Initialize webkitSpeechRecognition
+    let speechRecognition = new webkitSpeechRecognition();
 
-// Instantiate it
-const recognition = new recognitionSvc();
+    speechRecognition.lang = "de-DE";
 
-/* Set the speech recognition to continuous so it keeps listening to whatever you say. This way you can record long texts, conversations and so on. */
-recognition.continuous = true;
+    // String for the Final Transcript
+    let final_transcript = "";
+
+    // Set the properties for the Speech Recognition object
+    speechRecognition.continuous = true;
+    speechRecognition.interimResults = true;
+
+    // Callback Function for the onStart Event
+    speechRecognition.onstart = () => {
+        console.log('aa')
+        $('.accept').attr("disabled", true);
+
+        // Show the Status Element
+        // document.querySelector("#status").style.display = "block";
+    };
+    speechRecognition.onerror = () => {
+        // Hide the Status Element
+        // document.querySelector("#status").style.display = "none";
+    };
+    speechRecognition.onend = () => {
+        // Hide the Status Element
+        // document.querySelector("#status").style.display = "none";
+    };
+
+    speechRecognition.onresult = (event) => {
+        // Create the interim transcript string locally because we don't want it to persist like final transcript
+
+        // Loop through the results from the speech recognition object.
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            final_transcript = event.results[i][0].transcript;
+
+        }
+        document.querySelector("#output").innerHTML = final_transcript;
+        $('.accept').attr("disabled", false);
+    };
+
+    // Set the onClick property of the start button
+    document.querySelector("#start").onclick = () => {
+        document.getElementById("output").innerHTML = "Loading text...";
+        // Start the Speech Recognition
+        speechRecognition.start();
+    };
 
 
-/* Sets the language for speech recognition. It uses IETF tags, ISO 639-1 like en-GB, en-US, es-ES and so on */
-recognition.lang = 'en-GB';
-
-// Start the speech recognition
-recognition.start();
-
-// Event triggered when it gets a match
-recognition.onresult = (event) => {
-    // iterate through speech recognition results
-    for (const result of event.results) {
-        // Print the transcription to the console
-        console.log(`${result[0].transcript}`);
-    }
+} else {
+    console.log("Speech Recognition Not Available");
 }
-
-// Stop the speech recognition
-recognition.stop();

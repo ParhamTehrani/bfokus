@@ -20,28 +20,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
         <script src="/script.js"></script>
-        <script>
+        <script src="/speechRecognition.js"></script>
 
-            runSpeechRecog = () => {
-                document.getElementById("output").innerHTML = "Loading text...";
-                var output = document.getElementById('output');
-                var action = document.getElementById('action');
-                let recognization = new webkitSpeechRecognition();
-                recognization.lang = "de-DE";
-
-                recognization.onstart = () => {
-                    action.innerHTML = "Listening...";
-                    $('.accept').attr("disabled", true);
-                }
-                recognization.onresult = (e) => {
-                    var transcript = e.results[0][0].transcript;
-                    output.innerHTML = transcript;
-                    output.classList.remove("hide")
-                    $('.accept').attr("disabled", false);
-                    action.innerHTML = "";
-                }
-                recognization.start();
-            }
-        </script>
     </body>
 </html>
