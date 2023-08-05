@@ -24,15 +24,7 @@ class RainforestService implements ProviderInterface
             'search_term' => trim($search)
         ]);
 
-        $response = Http::withOptions([
-            'verify' => false,
-            'timeout' => 180,
-        ])
-            ->get('https://api.rainforest.com/request?' . $queryString);
-
-        $result = $response->json();
-
-        $ch = curl_init(sprintf('%s?%s', 'https://api.asindataapi.com/request', $queryString));
+        $ch = curl_init(sprintf('%s?%s', 'https://api.rainforest.com/request', $queryString));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
