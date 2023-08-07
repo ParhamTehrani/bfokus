@@ -21,7 +21,7 @@ class RainforestService implements ProviderInterface
             'api_key' => $this->provider->access_token,
             'type' => 'search',
             'amazon_domain' => 'amazon.de',
-//            'refinements' => 'Reviews rating 4 and over',
+            'refinements' => 'Reviews rating 4 and over',
             'search_term' => trim($search)
         ]);
 
@@ -29,7 +29,7 @@ class RainforestService implements ProviderInterface
             'verify' => false,
             'timeout' => 180,
         ])
-            ->get('https://api.rainforest.com/request?' . $queryString);
+            ->get('https://api.rainforestapi.com/request?' . $queryString);
 
         $result = $response->json();
 
