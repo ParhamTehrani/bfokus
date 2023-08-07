@@ -47,7 +47,7 @@ if ("webkitSpeechRecognition" in window) {
             document.querySelector("#output").innerHTML = final_transcript;
             $('.accept').attr("disabled", false);
             speechRecognition.stop()
-            window.location = '/search/' + document.querySelector("#output").innerHTML
+            // window.location = '/search/' + document.querySelector("#output").innerHTML
 
         }
     };
