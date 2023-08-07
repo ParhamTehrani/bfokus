@@ -22,5 +22,6 @@
         <script src="/script.js"></script>
         <script src="/speechRecognition.js"></script>
 
+        @yield('script')
     </body>
 </html>

@@ -1,6 +1,18 @@
 body{
     background-color: black;
+    font-size: 21px;
+    height: 100vh;
+
 }
 .container-fluid {
     max-width: 576px;
+    height: 100vh;
+
+}
+*:focus {
+    outline: 4px solid #14AE5C !important;
+}
+
+.mic-active{
+    display: none;
 }

@@ -9,12 +9,14 @@ if ("webkitSpeechRecognition" in window) {
 
     // Set the properties for the Speech Recognition object
     speechRecognition.continuous = true;
-    speechRecognition.interimResults = true;
 
     // Callback Function for the onStart Event
     speechRecognition.onstart = () => {
-        console.log('aa')
         $('.accept').attr("disabled", true);
+        $('.mic-disactive').hide();
+        $('.mic-active').show();
+        $('.output').focus();
+        $('.container-fluid').attr('tabindex','-1');
 
         // Show the Status Element
         // document.querySelector("#status").style.display = "block";
@@ -26,7 +28,11 @@ if ("webkitSpeechRecognition" in window) {
     speechRecognition.onend = () => {
         // Hide the Status Element
         // document.querySelector("#status").style.display = "none";
+        window.location = '/search/' + document.querySelector("#output").innerHTML
     };
+    speechRecognition.onspeechend = function() {
+        console.log('Speech recognition has stopped.');
+    }
 
     speechRecognition.onresult = (event) => {
         // Create the interim transcript string locally because we don't want it to persist like final transcript
@@ -38,11 +44,13 @@ if ("webkitSpeechRecognition" in window) {
         }
         document.querySelector("#output").innerHTML = final_transcript;
         $('.accept').attr("disabled", false);
+        speechRecognition.stop()
+        window.location = '/search/' + document.querySelector("#output").innerHTML
     };
 
     // Set the onClick property of the start button
     document.querySelector("#start").onclick = () => {
-        document.getElementById("output").innerHTML = "Loading text...";
+        document.getElementById("output").innerHTML = "Say what you looking for?";
         // Start the Speech Recognition
         speechRecognition.start();
     };

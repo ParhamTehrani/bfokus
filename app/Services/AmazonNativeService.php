@@ -168,7 +168,7 @@ class AmazonNativeService implements ProviderInterface
                     'asin' => $result['ASIN'],
                     'image' => $result['Images']['Primary']['Medium']['URL'],
                     'url' => $result['DetailPageURL'],
-                    'rating' => null,
+                    'rating' => 4,
                     'ratings_total' => null,
                     'price' => [
                         'value' => @$result['Offers']['Summaries'][0]['LowestPrice']['Amount'],

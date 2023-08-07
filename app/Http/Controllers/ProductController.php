@@ -12,7 +12,13 @@ class ProductController extends Controller
     {
         return view("index");
     }
-    public function search(ProviderInterface $provider,$search)
+
+    public function search($search)
+    {
+        return view("search-confirm",compact('search'));
+
+    }
+    public function search2(ProviderInterface $provider,$search)
     {
         $result = $provider->search($search);
         $products = $result['results'];
