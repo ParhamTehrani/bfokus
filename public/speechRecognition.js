@@ -42,10 +42,14 @@ if ("webkitSpeechRecognition" in window) {
             final_transcript = event.results[i][0].transcript;
 
         }
-        document.querySelector("#output").innerHTML = final_transcript;
-        $('.accept').attr("disabled", false);
-        speechRecognition.stop()
-        window.location = '/search/' + document.querySelector("#output").innerHTML
+
+        if (final_transcript.length > 2){
+            document.querySelector("#output").innerHTML = final_transcript;
+            $('.accept').attr("disabled", false);
+            speechRecognition.stop()
+            window.location = '/search/' + document.querySelector("#output").innerHTML
+
+        }
     };
 
     // Set the onClick property of the start button
