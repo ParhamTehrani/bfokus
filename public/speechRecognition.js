@@ -43,7 +43,7 @@ if ("webkitSpeechRecognition" in window) {
 
         }
 
-        if (final_transcript.length > 2 && final_transcript != 'Say what you looking for?'){
+        if (final_transcript.length > 2 && final_transcript != 'Say what you looking for?' && final_transcript != 'Say what you looking for'){
             document.querySelector("#output").innerHTML = final_transcript;
             $('.accept').attr("disabled", false);
             speechRecognition.stop()
