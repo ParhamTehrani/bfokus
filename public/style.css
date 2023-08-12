@@ -16,3 +16,26 @@ body{
 .mic-active{
     display: none;
 }
+.to-right{
+    transform: rotate(-90deg);
+}
+.collapse-part.selected{
+    background-color: #444;
+}
+.collapse{
+    color: white;
+}
+.product-actions a{
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    background-color: #D9D9D9;
+}
+.product-actions a:hover{
+    background-color: #FED815;
+}

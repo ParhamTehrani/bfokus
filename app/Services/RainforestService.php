@@ -58,8 +58,34 @@ class RainforestService implements ProviderInterface
         return $data;
     }
 
-    public function one()
+    public function one($asin)
     {
-        // TODO: Implement one() method.
+        $queryString = http_build_query([
+            'api_key' => $this->provider->access_token,
+            'amazon_domain' => 'amazon.de',
+            'refinements' => 'Reviews rating 4 and over',
+            'asin' => $asin,
+            'type' => 'product'
+        ]);
+
+        $response = Http::withOptions([
+            'verify' => false,
+            'timeout' => 180,
+        ])
+            ->get('https://api.rainforestapi.com/request?' . $queryString);
+
+        $result = $response->json();
+
+        $result=[
+            'title' => $result['product']['title'],
+            'asin' => @$result['product']['asin'],
+            'rating' => $result['product']['rating'],
+            'ratings_total' => $result['product']['ratings_total'],
+            'description' => $result['product']['description'],
+            'color' => $result['product']['color'],
+            'price' => $result['product']['buybox_winner']['price'],
+        ];
+
+        return $result;
     }
 }

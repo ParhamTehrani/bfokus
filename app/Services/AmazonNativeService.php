@@ -324,13 +324,13 @@ class AmazonNativeService implements ProviderInterface
         return $data;
     }
 
-    public function one()
+    public function one($asin)
     {
-        $product = 'B088NBCD1H';
+        $product = $asin;
         $serviceName="ProductAdvertisingAPI";
         $region="us-east-1";
-        $accessKey="AKIAI6BJD2TDO62RD4PA";
-        $secretKey="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";
+        $accessKey=$this->provider->access_token;
+        $secretKey=$this->provider->access_secret;
         $payload="{"
             ." \"ASIN\": \"$product\","
             ." \"Resources\": ["
@@ -433,8 +433,30 @@ class AmazonNativeService implements ProviderInterface
         $response = @stream_get_contents ( $fp );
 
         $response = json_decode($response,true);
+        $result = null;
+        if (@$response['VariationsResult']['Items']){
+            foreach ($response['VariationsResult']['Items'] as $item){
+                if ($item['ASIN'] == $asin){
+                    $response = $item;
+                }
+            }
+            $result=[
+                'title' => @$response['ItemInfo']['Title']['DisplayValue'],
+                'rating' => null,
+                'asin' => @$response['ASIN'],
+                'ratings_total' => null,
+                'description' => implode(' ' ,@$response['ItemInfo']['Features']['DisplayValues']),
+                'color' => null,
+                'price' => [
+                    "currency" => @$response['Offers']['Listings'][0]['Price']['Currency'],
+                    "value" => @$response['Offers']['Listings'][0]['Price']['Amount'],
+                    "raw" => @$response['Offers']['Listings'][0]['Price']['DisplayAmount'],
+                ],
+            ];
+        }
 
-        return $response;
+
+        return $result;
 
     }
 

@@ -6,5 +6,5 @@ interface ProviderInterface
 {
     public function search($search);
 
-    public function one();
+    public function one($asin);
 }

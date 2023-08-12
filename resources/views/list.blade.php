@@ -21,7 +21,7 @@
 
         <div class="d-grid justify-content-center py-2">
             @foreach($products as $key => $product)
-                <a class="d-flex" href="{{ $product['url'] }}" style="text-decoration: none" target="_blank" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99">
+                <a class="d-flex" href="/product/{{ $product['asin'] }}" style="text-decoration: none" target="_blank" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99">
                     <div tabindex="-1" >
                         <span tabindex="-1"  style="color:white;border: 1px solid grey;padding: 3px 6px;margin-right: 5px">{{ $key+1 }}</span>
                     </div>
@@ -39,5 +39,7 @@
 @section('script')
     <script>
         $('#data-result').focus();
+
+
     </script>
 @endsection
