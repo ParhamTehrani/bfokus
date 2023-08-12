@@ -77,13 +77,13 @@ class RainforestService implements ProviderInterface
         $result = $response->json();
 
         $result=[
-            'title' => $result['product']['title'],
+            'title' => @$result['product']['title'],
             'asin' => @$result['product']['asin'],
-            'rating' => $result['product']['rating'],
-            'ratings_total' => $result['product']['ratings_total'],
-            'description' => $result['product']['description'],
-            'color' => $result['product']['color'],
-            'price' => $result['product']['buybox_winner']['price'],
+            'rating' => @$result['product']['rating'],
+            'ratings_total' => @$result['product']['ratings_total'],
+            'description' => @$result['product']['description'],
+            'color' => @$result['product']['color'],
+            'price' => @$result['product']['buybox_winner']['price'],
         ];
 
         return $result;
