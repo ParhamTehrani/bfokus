@@ -38,6 +38,9 @@ class ProductController extends Controller
         $product_list = Session::get('last_list');
         $product_list = json_decode($product_list,true);
         $product = $provider->one($asin);
+        if (!$product){
+            return redirect('/result/' / Session::get('last_search'));
+        }
         $index = null;
         foreach ($product_list as $key => $pr){
             if ($pr['asin'] == @$asin){
