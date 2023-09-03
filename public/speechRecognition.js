@@ -1,7 +1,7 @@
-if ("webkitSpeechRecognition" in window) {
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     // Initialize webkitSpeechRecognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let speechRecognition = new SpeechRecognition();
+    const speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    speechRecognition.interimResults = true; // Set to true if you want to get intermediate results
 
     speechRecognition.lang = "de-DE";
 
@@ -25,8 +25,9 @@ if ("webkitSpeechRecognition" in window) {
     };
     speechRecognition.onerror = function(event) {
         console.log('error')
-
         console.log(event.error);
+        speechRecognition.stop();
+
     };
 
     speechRecognition.onend = () => {
@@ -48,21 +49,27 @@ if ("webkitSpeechRecognition" in window) {
             final_transcript = event.results[i][0].transcript;
 
         }
+        console.log(final_transcript)
 
         if (final_transcript.length > 2 && final_transcript != 'Say what you looking for?' && final_transcript != 'Say what you looking for'){
             document.querySelector("#output").innerHTML = final_transcript;
             $('.accept').attr("disabled", false);
-            speechRecognition.stop()
             // window.location = '/search/' + document.querySelector("#output").innerHTML
+            speechRecognition.stop()
 
         }
+
     };
 
+
+    const startRecognition = () => {
+        speechRecognition.start();
+    };
     // Set the onClick property of the start button
     document.querySelector("#start").onclick = () => {
         document.getElementById("output").innerHTML = "Say what you looking for?";
         // Start the Speech Recognition
-        speechRecognition.start();
+        startRecognition();
     };
 
 
