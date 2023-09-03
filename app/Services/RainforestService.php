@@ -77,7 +77,6 @@ class RainforestService implements ProviderInterface
 
         $result = $response->json();
 
-        dd($result);
 
         $result=[
             'title' => @$result['product']['title'],
