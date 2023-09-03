@@ -33,7 +33,6 @@ class RainforestService implements ProviderInterface
 
         $result = $response->json();
 
-        dd($result);
 
         $searchResult = [];
         if (@$result['search_results']){
