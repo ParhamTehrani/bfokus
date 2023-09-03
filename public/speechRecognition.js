@@ -12,6 +12,7 @@ if ("webkitSpeechRecognition" in window) {
 
     // Callback Function for the onStart Event
     speechRecognition.onstart = () => {
+        console.log('start')
         $('.accept').attr("disabled", true);
         $('.mic-disactive').hide();
         $('.mic-active').show();
@@ -22,13 +23,16 @@ if ("webkitSpeechRecognition" in window) {
         // document.querySelector("#status").style.display = "block";
     };
     speechRecognition.onerror = function(event) {
+        console.log('error')
+
         console.log(event.error);
     };
 
     speechRecognition.onend = () => {
+        console.log('end')
         // Hide the Status Element
         // document.querySelector("#status").style.display = "none";
-        window.location = '/search/' + document.querySelector("#output").innerHTML
+        // window.location = '/search/' + document.querySelector("#output").innerHTML
     };
     speechRecognition.onspeechend = function() {
         console.log('Speech recognition has stopped.');
@@ -36,6 +40,7 @@ if ("webkitSpeechRecognition" in window) {
 
     speechRecognition.onresult = (event) => {
         // Create the interim transcript string locally because we don't want it to persist like final transcript
+        console.log('result')
 
         // Loop through the results from the speech recognition object.
         for (let i = event.resultIndex; i < event.results.length; ++i) {
