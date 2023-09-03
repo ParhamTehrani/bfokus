@@ -21,10 +21,10 @@ if ("webkitSpeechRecognition" in window) {
         // Show the Status Element
         // document.querySelector("#status").style.display = "block";
     };
-    speechRecognition.onerror = () => {
-        // Hide the Status Element
-        // document.querySelector("#status").style.display = "none";
+    speechRecognition.onerror = function(event) {
+        console.log(event.error);
     };
+
     speechRecognition.onend = () => {
         // Hide the Status Element
         // document.querySelector("#status").style.display = "none";
