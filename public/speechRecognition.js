@@ -34,7 +34,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         console.log('end')
         // Hide the Status Element
         // document.querySelector("#status").style.display = "none";
-        // window.location = '/search/' + document.querySelector("#output").innerHTML
+        window.location = '/search/' + document.querySelector("#output").innerHTML
     };
     speechRecognition.onspeechend = function() {
         console.log('Speech recognition has stopped.');
