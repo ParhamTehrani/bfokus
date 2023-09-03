@@ -42,22 +42,37 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
     speechRecognition.onresult = (event) => {
         // Create the interim transcript string locally because we don't want it to persist like final transcript
-        console.log('result')
+
+        let interim_transcript = "";
 
         // Loop through the results from the speech recognition object.
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-            final_transcript = event.results[i][0].transcript;
-
+            // If the result item is Final, add it to Final Transcript, Else add it to Interim transcript
+            if (event.results[i].isFinal) {
+                final_transcript += event.results[i][0].transcript;
+            } else {
+                interim_transcript += event.results[i][0].transcript;
+            }
         }
-        console.log(final_transcript)
+        document.querySelector("#output").innerHTML = final_transcript;
+        setTimeout(()=>{
+                speechRecognition.stop()
+        },2000)
 
-        if (final_transcript.length > 2 && final_transcript != 'Say what you looking for?' && final_transcript != 'Say what you looking for'){
-            document.querySelector("#output").innerHTML = final_transcript;
-            $('.accept').attr("disabled", false);
-            // window.location = '/search/' + document.querySelector("#output").innerHTML
-            speechRecognition.stop()
-
-        }
+        // // Loop through the results from the speech recognition object.
+        // for (let i = event.resultIndex; i < event.results.length; ++i) {
+        //     final_transcript = event.results[i][0].transcript;
+        //
+        // }
+        // console.log(final_transcript)
+        //
+        // if (final_transcript.length > 2 && final_transcript != 'Say what you looking for?' && final_transcript != 'Say what you looking for'){
+        //     document.querySelector("#output").innerHTML = final_transcript;
+        //     $('.accept').attr("disabled", false);
+        //     // window.location = '/search/' + document.querySelector("#output").innerHTML
+        //     speechRecognition.stop()
+        //
+        // }
 
     };
 
