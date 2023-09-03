@@ -33,6 +33,8 @@ class RainforestService implements ProviderInterface
 
         $result = $response->json();
 
+        dd($result);
+
         $searchResult = [];
         if (@$result['search_results']){
             foreach ($result['search_results'] as $result){
@@ -75,6 +77,8 @@ class RainforestService implements ProviderInterface
             ->get('https://api.rainforestapi.com/request?' . $queryString);
 
         $result = $response->json();
+
+        dd($result);
 
         $result=[
             'title' => @$result['product']['title'],

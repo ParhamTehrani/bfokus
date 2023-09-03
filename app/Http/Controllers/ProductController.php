@@ -22,8 +22,14 @@ class ProductController extends Controller
     }
     public function search2(ProviderInterface $provider,$search)
     {
-        $result = $provider->search($search);
-        $products = $result['results'];
+        $last_search = Session::get('last_search');
+        if ($last_search == $search){
+            $products = Session::get('last_list');
+            $products = json_decode($products,true);
+        }else{
+            $result = $provider->search($search);
+            $products = $result['results'];
+        }
         $maxPrice = max(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
         $minPrice = min(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
         $minStar  = min(count(array_filter(array_column($products,'rating'))) > 0 ? array_filter(array_column($products,'rating')) : [0]);
