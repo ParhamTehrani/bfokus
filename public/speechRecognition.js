@@ -1,6 +1,7 @@
 if ("webkitSpeechRecognition" in window) {
     // Initialize webkitSpeechRecognition
-    let speechRecognition = new webkitSpeechRecognition();
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let speechRecognition = new SpeechRecognition();
 
     speechRecognition.lang = "de-DE";
 
