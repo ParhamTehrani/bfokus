@@ -36,7 +36,11 @@ class ProductController extends Controller
 
         Session::put('last_list', json_encode($products));
         Session::put('last_search', $search);
-        return view("list",compact('products','maxPrice','minPrice','minStar','search'));
+        $index = null;
+        if (\request()->has('index')){
+            $index = \request()->get('index');
+        }
+        return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
     }
 
     public function one(ProviderInterface $provider,$asin)

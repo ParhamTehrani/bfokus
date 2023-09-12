@@ -6,9 +6,9 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" viewBox="0 0 40 33" fill="none">
                 <path d="M40 13.75H8.51111L16.4667 3.8775L13.3333 0L0 16.5L13.3333 33L16.4667 29.1225L8.51111 19.25H40V13.75Z" fill="#D9D9D9"/>
             </svg>
-            <span class="mx-3" style="color: white;font-size: 1.5rem">
+            <a class="mx-3" style="color: white;font-size: 1.5rem;text-decoration: none" href="/result/{{ \Illuminate\Support\Facades\Session::get('last_search') }}?index={{ $index }}">
                 Back to List
-            </span>
+            </a>
         </div>
 
         <div tabindex="0" class="my-2">
@@ -52,7 +52,7 @@
             <a class="btn" tabindex="0" href="{{ @$product['url'] }}" target="_blank">open this product on amazon</a>
             <a class="btn" tabindex="0" href="?next">next product</a>
             <a class="btn" tabindex="0" href="?previous">previous product</a>
-            <a class="btn" tabindex="0" href="/result/{{ \Illuminate\Support\Facades\Session::get('last_search') }}">back to search list</a>
+            <a class="btn" tabindex="0" href="/result/{{ \Illuminate\Support\Facades\Session::get('last_search') }}?index={{ $index }}">back to search list</a>
             <a class="btn" tabindex="0" href="/?search">search another product</a>
         </div>
     </div>
