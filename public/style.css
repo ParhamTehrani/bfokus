@@ -39,3 +39,14 @@ body{
 .product-actions a:hover{
     background-color: #FED815;
 }
+.btn{
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    background-color: #D9D9D9;
+}
