@@ -25,5 +25,13 @@
         <script src="/speechRecognition.js"></script>
 
         @yield('script')
+        <script>
+            $(document).keypress(function (event) {
+                if (event.keyCode === 13) {
+                    var focused = $(':focus');
+                    focused.click()
+                }
+            });
+        </script>
     </body>
 </html>

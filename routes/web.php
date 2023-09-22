@@ -17,3 +17,4 @@ Route::get('/', [\App\Http\Controllers\ProductController::class,'index']);
 Route::get('/search/{search}', [\App\Http\Controllers\ProductController::class,'search']);
 Route::get('/result/{search}', [\App\Http\Controllers\ProductController::class,'search2']);
 Route::get('/product/{asin}', [\App\Http\Controllers\ProductController::class,'one']);
+Route::get('/result/{search}/page', [\App\Http\Controllers\ProductController::class,'search_page']);

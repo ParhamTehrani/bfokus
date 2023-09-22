@@ -6,6 +6,8 @@ use App\Interfaces\ProviderInterface;
 use App\Models\Provider;
 use App\Services\AmazonNativeService;
 use App\Services\RainforestService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -19,7 +21,32 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Collection::macro('paginate', function ($perPage = 10, $page = null, $total = null, $pageName = 'page') {
 
+            $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
+            $test = new LengthAwarePaginator(
+                $this->forPage($page, $perPage),
+                $total ?: $this->count(),
+                $perPage,
+                $page,
+                [
+                    'path' => LengthAwarePaginator::resolveCurrentPath(),
+                    'pageName' => $pageName,
+                ]
+            );
+            return $test;
+//            return [
+//                'current_page' => $test->currentPage(),
+////                'data' => array_values($test->items()),
+//                'data' => array_values($test->items()),
+//                'total' => $test->total(),
+//                'per_page' => $test->perPage(),
+//                'previous_page_url' => $test->previousPageUrl(),
+//                'next_page_url' => $test->nextPageUrl(),
+//                'last_page' => $test->lastPage(),
+//                'on_first_page' => $test->onFirstPage(),
+//            ];
+        });
     }
 
     /**

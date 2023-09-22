@@ -1,6 +1,7 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid d-grid justify-content-center align-self-center align-items-center py-5 px-5" >
+        <input type="hidden" name="page" value="1" id="page">
         <a href="/?search" tabindex="1" aria-label="Voice search"  style="cursor: pointer;display: flex;justify-content: center;text-decoration: none;align-items: end;position: relative;
 }"  >
             <svg xmlns="http://www.w3.org/2000/svg" width="42" height="63" viewBox="0 0 42 63" fill="none" tabindex="-1">
@@ -19,18 +20,22 @@
                 {{ count($products) }} products.</p>
         </div>
 
-        <div class="d-grid justify-content-center py-2">
+        <div class="d-grid justify-content-center py-2 pro-list">
             @foreach($products as $key => $product)
-                <a id="item-{{$key}}" class="d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99">
+                <a id="item-{{$key}}" class="items d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99">
                     <div tabindex="-1" >
                         <p style="color:white;" tabindex="-1" >
-                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99
+                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format($products['price']) }}
                         </p>
                     </div>
                 </a>
             @endforeach
         </div>
 
+        <div style="display:grid;">
+            <button style="background-color: white;color: black;border-radius: 5px;border: none;padding: 7px 0;margin: 5px 0 " type="button" onclick="loadMore()" class="more-page">Load 7 more products</button>
+            <a style="background-color: white;color: black;border-radius: 5px;border: none;padding: 7px 0;margin: 5px 0; text-decoration: none;display: flex;justify-content: center" href="/?search">Voice search another </a>
+        </div>
     </div>
 @endsection
 @section('script')
@@ -46,6 +51,35 @@
         });
 
         @endif
+
+        function loadMore(){
+            let page = $('#page').val()
+            $.ajax({
+                url: "/result/{{ $search }}/page?page=" + page,
+                type: "Get",
+
+                success: function (data) {
+                    let lastNo = $('.items').last().attr('id').replace("item-", "");
+                    data.products.forEach((product,index) => {
+                        let html = `       <a id="item-${lastNo +1 }" class="items d-flex " href="/product/${product.asin}" style="text-decoration: none" tabindex="0" aria-label="Item ${lastNo+1} is ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price }">
+                                    <div tabindex="-1" >
+                                        <p style="color:white;" tabindex="-1" >
+                                            ${lastNo + 2 }. ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price }
+                                        </p>
+                                    </div>
+                                </a>`
+                        $('.pro-list').append(html)
+                        lastNo++
+                    })
+                    if(!data.more_page){
+                        $('.more-page').hide()
+                    }
+                },
+                error: function (data) {
+                    console.log(data)
+                }
+            });
+        }
 
     </script>
 @endsection

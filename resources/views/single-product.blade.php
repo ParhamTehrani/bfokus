@@ -6,12 +6,12 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" viewBox="0 0 40 33" fill="none">
                 <path d="M40 13.75H8.51111L16.4667 3.8775L13.3333 0L0 16.5L13.3333 33L16.4667 29.1225L8.51111 19.25H40V13.75Z" fill="#D9D9D9"/>
             </svg>
-            <a class="mx-3" style="color: white;font-size: 1.5rem;text-decoration: none" href="/result/{{ \Illuminate\Support\Facades\Session::get('last_search') }}?index={{ $index }}">
+            <a class="mx-3" style="color: white;font-size: 1.5rem;text-decoration: none" tabindex="-1" href="/result/{{ \Illuminate\Support\Facades\Session::get('last_search') }}?index={{ $index }}">
                 Back to List
             </a>
         </div>
 
-        <div tabindex="0" class="my-2">
+        <div tabindex="0" class="my-2 product-data" id="product-data">
             <span style="color: white;font-size: 1.4rem">
                 This page include info of product {{ $index ?? 1 }} of {{ count($product_list) }}, at the end of page can access result list.
             </span>
@@ -21,11 +21,13 @@
                {{ $product['title'] }}
             </span>
         </div>
+        @if($product['description'])
         <div tabindex="0" class="my-2">
             <span style="color: white;font-size: 1.4rem">
                {{ $product['description'] }}
             </span>
         </div>
+        @endif
         <div tabindex="0" class="my-2">
             <span style="color: white;font-size: 1.4rem">
                 It’s Amazan’s choice with {{ $product['rating'] }} of 5 stars by {{ $product['ratings_total'] }} review
@@ -59,6 +61,8 @@
 @endsection
 @section('script')
     <script>
+        $('#product-data').focus();
+
         $(document).on('click','.btn-toggle',function () {
             if($(this).parent().hasClass('selected')){
                 $(this).parent().removeClass('selected')

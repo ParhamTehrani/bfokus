@@ -17,7 +17,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         $('.accept').attr("disabled", true);
         $('.mic-disactive').hide();
         $('.mic-active').show();
-        $('.output').focus();
+        $('#output').attr("tabindex", 1);
+        $('#output').focus();
         $('.container-fluid').attr('tabindex','-1');
 
         // Show the Status Element
