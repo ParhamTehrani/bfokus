@@ -24,6 +24,8 @@ class ProductController extends Controller
     public function search2(ProviderInterface $provider,$search)
     {
         $products = Cache::get($search);
+        $index = null;
+
         if ($products){
             if (\request()->has('index')){
                 $index = \request()->get('index');
@@ -50,7 +52,6 @@ class ProductController extends Controller
 
             Session::put('last_list', json_encode($products));
             Session::put('last_search', $search);
-            $index = null;
 
 
             if (\request()->has('index')){
