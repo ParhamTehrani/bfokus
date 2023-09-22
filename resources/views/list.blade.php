@@ -59,10 +59,10 @@
                 type: "Get",
 
                 success: function (data) {
-                    let lastNo = $('.items').last().attr('id').replace("item-", "");
+                    let lastNo = $('.items').length;
                     lastNo = parseInt(lastNo)
-                    data.products.forEach((product,index) => {
-                        let html = `       <a id="item-${lastNo +1 }" class="items d-flex " href="/product/${product.asin}" style="text-decoration: none" tabindex="0" aria-label="Item ${lastNo+1} is ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price.value }">
+                    data.products.forEach((product) => {
+                        let html = `<a id="item-${lastNo +1 }" class="items d-flex " href="/product/${product.asin}" style="text-decoration: none" tabindex="0" aria-label="Item ${lastNo+1} is ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price.value }">
                                     <div tabindex="-1" >
                                         <p style="color:white;" tabindex="-1" >
                                             ${lastNo + 2 }. ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price.value }
