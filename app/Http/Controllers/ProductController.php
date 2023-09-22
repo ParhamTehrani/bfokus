@@ -57,8 +57,8 @@ class ProductController extends Controller
             if (\request()->has('index')){
                 $index = \request()->get('index');
             }
-            Cache::put($search,json_encode($products),60 * 60 * 1);
             $products = array_slice($products,0,7);
+            Cache::put($search,json_encode($products),60 * 60 * 1);
             return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
         }
     }
