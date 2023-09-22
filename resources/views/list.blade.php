@@ -22,9 +22,6 @@
 
         <div class="d-grid justify-content-center py-2 pro-list">
             @foreach($products as $key => $product)
-                @if(!@$product['price'])
-                    @dd($product)
-                @endif
                 <a id="item-{{$key}}" class="items d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format(@$products['price']['value'] ?? 0) }}">
                     <div tabindex="-1" >
                         <p style="color:white;" tabindex="-1" >
@@ -63,6 +60,7 @@
 
                 success: function (data) {
                     let lastNo = $('.items').last().attr('id').replace("item-", "");
+                    console.log(lastNo)
                     data.products.forEach((product,index) => {
                         let html = `       <a id="item-${lastNo +1 }" class="items d-flex " href="/product/${product.asin}" style="text-decoration: none" tabindex="0" aria-label="Item ${lastNo+1} is ${product.title} / Rate is {{ $product['rating'] }} of ${ product.ratings_total } reviews price is €${ product.price.value }">
                                     <div tabindex="-1" >
