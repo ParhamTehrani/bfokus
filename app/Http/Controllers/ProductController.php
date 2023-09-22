@@ -34,7 +34,7 @@ class ProductController extends Controller
             $maxPrice = max(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minPrice = min(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minStar  = min(count(array_filter(array_column($products,'rating'))) > 0 ? array_filter(array_column($products,'rating')) : [0]);
-            $products = array_slice($products,0,6);
+            $products = array_slice($products,0,7);
             return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
 
         }else{
