@@ -33,8 +33,8 @@
         </div>
 
         <div style="display:grid;">
-            <button style="background-color: white;color: black;border-radius: 5px;border: none;padding: 7px 0;margin: 5px 0 " type="button" onclick="loadMore()" class="more-page">Load 7 more products</button>
-            <a style="background-color: white;color: black;border-radius: 5px;border: none;padding: 7px 0;margin: 5px 0; text-decoration: none;display: flex;justify-content: center" href="/?search">Voice search another </a>
+            <button type="button" onclick="loadMore()" class="more-page btn ">Load 7 more products</button>
+            <a class="btn" href="/?search">Voice search another </a>
         </div>
     </div>
 @endsection
