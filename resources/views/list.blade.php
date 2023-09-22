@@ -22,11 +22,13 @@
 
         <div class="d-grid justify-content-center py-2 pro-list">
             @foreach($products as $key => $product)
-                @dd($product)
-                <a id="item-{{$key}}" class="items d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ number_format($product['ratings_total']) }} reviews price is €64.99">
+                @if(!@$product['price'])
+                    @dd($product)
+                @endif
+                <a id="item-{{$key}}" class="items d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format(@$products['price']['value'] ?? 0) }}">
                     <div tabindex="-1" >
                         <p style="color:white;" tabindex="-1" >
-                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format($products['price']['value']) }}
+                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format(@$products['price']['value'] ?? 0) }}
                         </p>
                     </div>
                 </a>
