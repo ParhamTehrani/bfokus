@@ -58,7 +58,7 @@ class ProductController extends Controller
                 $index = \request()->get('index');
             }
             Cache::put($search,json_encode($products),60 * 60 * 1);
-            $products = array_slice($products,0,6);
+            $products = array_slice($products,0,7);
             return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
         }
     }
@@ -71,7 +71,7 @@ class ProductController extends Controller
             if ($request->page){
                 $products = json_decode($products,true);
                 $productsCount = @count($products);
-                $products = @array_slice($products,0 + (7 * $request->page),6 + (7 * $request->page));
+                $products = @array_slice($products,0 + (7 * $request->page),7);
                 return response()->json([
                     'products' => $products,
                     'more_page' => $productsCount > 6 + (7 * $request->page)
