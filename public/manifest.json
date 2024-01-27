@@ -1,0 +1,28 @@
+{
+    "theme_color": "#8936FF",
+    "background_color": "#2EC6FE",
+    "orientation": "any",
+    "display": "standalone",
+    "dir": "auto",
+    "lang": "en-US",
+    "name": "Bfokus",
+    "short_name": "Bfokus",
+    "start_url": "https://amazon.parhamtehrani.ir/",
+    "scope": "/",
+    "description": "Bfokus",
+    "id": "Bfokus",
+    "icons": [
+        {
+            "src": "/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+
+}
