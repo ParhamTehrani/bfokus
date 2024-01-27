@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "ir.parhamtehrani.amazon.twa",
+        "sha256_cert_fingerprints": ["3A:F9:7B:8A:3E:72:13:81:09:09:67:F8:62:95:1D:C1:BA:AC:73:AF:D0:D3:08:F9:B7:ED:DD:8B:F1:8B:A2:5E"]
+      }
+    }]
