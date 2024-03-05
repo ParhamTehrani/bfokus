@@ -23,14 +23,14 @@ class ProductController extends Controller
     }
     public function search2(ProviderInterface $provider,$search)
     {
-        $products = Cache::get($search);
+        $products = Cache::get('provider_'. $provider->getProvider() . ': ' .$search);
         $index = null;
 
-        if ($products){
+        if (@count(@$products ?? [])){
             if (\request()->has('index')){
                 $index = \request()->get('index');
             }
-            $products = json_decode($products,true);
+            $products = $products;
             $maxPrice = max(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minPrice = min(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minStar  = min(count(array_filter(array_column($products,'rating'))) > 0 ? array_filter(array_column($products,'rating')) : [0]);
@@ -38,10 +38,9 @@ class ProductController extends Controller
             return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
 
         }else{
-            $last_search = Session::get('last_search');
+            $last_search = Session::get('last_search_' . $provider->getProvider());
             if ($last_search == $search){
-                $products = Session::get('last_list');
-                $products = json_decode($products,true);
+                $products = Session::get('last_list_' . $provider->getProvider());
             }else{
                 $result = $provider->search($search);
                 $products = $result['results'];
@@ -50,26 +49,28 @@ class ProductController extends Controller
             $minPrice = min(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minStar  = min(count(array_filter(array_column($products,'rating'))) > 0 ? array_filter(array_column($products,'rating')) : [0]);
 
-            Session::put('last_list', json_encode($products));
-            Session::put('last_search', $search);
+            Session::put('last_list_' . $provider->getProvider(), $products);
+            Session::put('last_search_' . $provider->getProvider(), $search);
 
 
             if (\request()->has('index')){
                 $index = \request()->get('index');
             }
+            if (count($products)){
+                Cache::put('provider_'. $provider->getProvider() . ': ' .$search,$products,60 * 60 * 1);
+            }
             $products = array_slice($products,0,7);
-            Cache::put($search,json_encode($products),60 * 60 * 1);
+
             return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
         }
     }
 
 
-    public function search_page(Request $request,$search)
+    public function search_page(Request $request,$search,ProviderInterface $provider)
     {
-        $products = Cache::get($search);
+        $products = Cache::get('provider_'. $provider->getProvider() . ': ' .$search);
         if ($search){
             if ($request->page){
-                $products = json_decode($products,true);
                 $productsCount = @count($products);
                 $products = @array_slice($products,0 + (7 * $request->page),7);
                 return response()->json([
@@ -92,11 +93,11 @@ class ProductController extends Controller
 
     public function one(ProviderInterface $provider,$asin)
     {
-        $product_list = Session::get('last_list');
-        $product_list = json_decode($product_list,true);
+        $product_list = Session::get('last_list_' . $provider->getProvider());
+        $product_list = $product_list;
         $product = $provider->one($asin);
         if (!$product){
-            return redirect('/result/' . Session::get('last_search'));
+            return redirect('/result/' . Session::get('last_search_' . $provider->getProvider()));
         }
         $index = null;
         foreach ($product_list as $key => $pr){

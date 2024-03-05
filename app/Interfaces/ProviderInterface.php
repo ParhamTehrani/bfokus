@@ -7,4 +7,6 @@ interface ProviderInterface
     public function search($search);
 
     public function one($asin);
+
+    public function getProvider();
 }

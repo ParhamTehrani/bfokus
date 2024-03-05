@@ -56,12 +56,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Schema::hasTable('providers')){
-            $provider = DB::select(DB::raw('SELECT * FROM providers WHERE chance >= RAND() * 10 AND is_active = true ORDER BY chance ASC LIMIT 1'))[0];
-            if (@!$provider){
-                $provider = Provider::where('is_active',true)->first();
-            }
-            switch (@$provider->name){
+        if (request()->has('provider')){
+            switch (request()->get('provider')){
                 default:
                 case 'amazon_native':
                     $this->app->bind(ProviderInterface::class,AmazonNativeService::class);
@@ -69,6 +65,22 @@ class AppServiceProvider extends ServiceProvider
                 case 'rainforest':
                     $this->app->bind(ProviderInterface::class,RainforestService::class);
                     break;
+            }
+        }else{
+            if (Schema::hasTable('providers')){
+                $provider = DB::select(DB::raw('SELECT * FROM providers WHERE chance >= RAND() * 10 AND is_active = true ORDER BY chance ASC LIMIT 1'))[0];
+                if (@!$provider){
+                    $provider = Provider::where('is_active',true)->first();
+                }
+                switch (@$provider->name){
+                    default:
+                    case 'amazon_native':
+                        $this->app->bind(ProviderInterface::class,AmazonNativeService::class);
+                        break;
+                    case 'rainforest':
+                        $this->app->bind(ProviderInterface::class,RainforestService::class);
+                        break;
+                }
             }
         }
 

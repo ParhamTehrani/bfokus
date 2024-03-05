@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Helpers\AwsV4;
 use App\Interfaces\ProviderInterface;
 use App\Models\Provider;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
 
 class AmazonNativeService implements ProviderInterface
 {
@@ -136,25 +139,32 @@ class AmazonNativeService implements ProviderInterface
 
     private function sendRequest($headers, $payload)
     {
-        $params = [
-            'http' => [
-                'header' => implode("\r\n", array_map(
-                    function ($key, $value) {
-                        return "$key: $value";
-                    },
-                    array_keys($headers),
-                    array_values($headers)
-                )),
-                'method' => 'POST',
-                'content' => $payload
-            ]
-        ];
+        $client = new Client();
 
-        $stream = stream_context_create($params);
-        $fp = @fopen('https://webservices.amazon.com/paapi5/searchitems', 'rb', false, $stream);
-        $response = @stream_get_contents($fp);
+        // Preparing headers for Guzzle request
+        $guzzleHeaders = [];
+        foreach ($headers as $key => $value) {
+            $guzzleHeaders[$key] = $value;
+        }
 
-        return json_decode($response, true);
+        try {
+            // Create a PSR-7 request object
+            $request = new Request('POST', 'https://webservices.amazon.com/paapi5/searchitems', $guzzleHeaders, $payload);
+
+            // Send the request
+            $response = $client->send($request, ['http_errors' => false]);
+
+            // Get the body of the response
+            $body = $response->getBody()->getContents();
+            dd($body);
+
+            // Decode the JSON response into an associative array
+            return json_decode($body, true);
+        } catch (GuzzleException $e) {
+            // Log or handle the error as needed
+            dd($e->getMessage());
+            return null; // Adjust based on how you want to handle errors
+        }
     }
 
     private function parseResponse($response)
@@ -460,4 +470,8 @@ class AmazonNativeService implements ProviderInterface
 
     }
 
+    public function getProvider()
+    {
+        return 'amazon_native';
+    }
 }

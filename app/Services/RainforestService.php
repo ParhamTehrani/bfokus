@@ -90,4 +90,9 @@ class RainforestService implements ProviderInterface
 
         return $result;
     }
+
+    public function getProvider()
+    {
+        return 'rainforest';
+    }
 }
