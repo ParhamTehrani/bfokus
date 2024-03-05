@@ -156,13 +156,11 @@ class AmazonNativeService implements ProviderInterface
 
             // Get the body of the response
             $body = $response->getBody()->getContents();
-            dd($body);
 
             // Decode the JSON response into an associative array
             return json_decode($body, true);
         } catch (GuzzleException $e) {
             // Log or handle the error as needed
-            dd($e->getMessage());
             return null; // Adjust based on how you want to handle errors
         }
     }
