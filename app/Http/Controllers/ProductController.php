@@ -100,29 +100,32 @@ class ProductController extends Controller
             return redirect('/result/' . Session::get('last_search_' . $provider->getProvider()));
         }
         $index = null;
-        foreach ($product_list as $key => $pr){
-            if ($pr['asin'] == @$asin){
-                $index = $key;
+        if($product_list){
+            foreach ($product_list as $key => $pr){
+                if ($pr['asin'] == @$asin){
+                    $index = $key;
+                }
+            }
+            if (\request()->has('next')){
+                $newProduct = @$product_list[$index+1];
+                if (@$newProduct){
+                    return redirect('/product/' . $newProduct['asin']);
+                }else{
+                    $newProduct = end($product_list);
+                    return redirect('/product/' . $newProduct['asin']);
+                }
+            }
+            if (\request()->has('previous')){
+                $newProduct = @$product_list[$index-1];
+                if (@$newProduct){
+                    return redirect('/product/' . $newProduct['asin']);
+                }else{
+                    $newProduct = $product_list[1];
+                    return redirect('/product/' . $newProduct['asin']);
+                }
             }
         }
-        if (\request()->has('next')){
-            $newProduct = @$product_list[$index+1];
-            if (@$newProduct){
-                return redirect('/product/' . $newProduct['asin']);
-            }else{
-                $newProduct = end($product_list);
-                return redirect('/product/' . $newProduct['asin']);
-            }
-        }
-        if (\request()->has('previous')){
-            $newProduct = @$product_list[$index-1];
-            if (@$newProduct){
-                return redirect('/product/' . $newProduct['asin']);
-            }else{
-                $newProduct = $product_list[1];
-                return redirect('/product/' . $newProduct['asin']);
-            }
-        }
+
         return view('single-product',compact('product','index','product_list'));
     }
 }

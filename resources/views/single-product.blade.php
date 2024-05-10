@@ -11,22 +11,24 @@
             </a>
         </div>
 
-        <div tabindex="0" class="my-2 product-data" id="product-data">
+        @if($product_list)
+            <div tabindex="0" class="my-2 product-data" id="product-data">
             <span style="color: white;font-size: 1.4rem">
                 This page include info of product {{ $index ?? 1 }} of {{ count($product_list) }}, at the end of page can access result list.
             </span>
-        </div>
+            </div>
+        @endif
         <div tabindex="0" class="my-2">
             <span style="color: white;font-size: 1.4rem">
                {{ $product['title'] }}
             </span>
         </div>
         @if($product['description'])
-        <div tabindex="0" class="my-2">
+            <div tabindex="0" class="my-2">
             <span style="color: white;font-size: 1.4rem">
                {{ $product['description'] }}
             </span>
-        </div>
+            </div>
         @endif
         <div tabindex="0" class="my-2">
             <span style="color: white;font-size: 1.4rem">
@@ -46,8 +48,8 @@
                 <span style="color: white">Black and white color exits. W-tap to choose color</span>
             </button>
             <div class="collapse collapse-body p-2" id="collapseExample">
-               <p tabindex="0" class="toggle-item" style="color:#fff;">White, w-tap to select</p>
-               <p tabindex="0" class="toggle-item" style="color:#fff;">Black, w-tap to select</p>
+                <p tabindex="0" class="toggle-item" style="color:#fff;">White, w-tap to select</p>
+                <p tabindex="0" class="toggle-item" style="color:#fff;">Black, w-tap to select</p>
             </div>
         </div>
         <div tabindex="-1" class="d-grid product-actions my-2">

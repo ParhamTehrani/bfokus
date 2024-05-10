@@ -8,6 +8,7 @@ use App\Models\Provider;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Http;
 
 class AmazonNativeService implements ProviderInterface
 {
@@ -148,18 +149,11 @@ class AmazonNativeService implements ProviderInterface
         }
 
         try {
-            // Create a PSR-7 request object
-            $request = new Request('POST', 'https://webservices.amazon.com/paapi5/searchitems', $guzzleHeaders, $payload);
-
-            // Send the request
-            $response = $client->send($request, ['http_errors' => false]);
-
-            // Get the body of the response
-            $body = $response->getBody()->getContents();
-
+            $url = 'https://webservices.amazon.com/paapi5/searchitems';
+            $response = Http::withHeaders($guzzleHeaders)->post($url, json_decode($payload, true));
             // Decode the JSON response into an associative array
-            return json_decode($body, true);
-        } catch (GuzzleException $e) {
+            return $response->json();
+        } catch (\Throwable $e) {
             // Log or handle the error as needed
             return null; // Adjust based on how you want to handle errors
         }
@@ -448,12 +442,15 @@ class AmazonNativeService implements ProviderInterface
                     $response = $item;
                 }
             }
+            if(!@$response['ItemInfo']){
+                $response = $response['VariationsResult']['Items'][0];
+            }
             $result=[
                 'title' => @$response['ItemInfo']['Title']['DisplayValue'],
                 'rating' => null,
                 'asin' => @$response['ASIN'],
                 'ratings_total' => null,
-                'description' => implode(' ' ,@$response['ItemInfo']['Features']['DisplayValues']),
+                'description' => is_array($response['ItemInfo']['Features']['DisplayValues']) ? implode(' ' ,@$response['ItemInfo']['Features']['DisplayValues']) : @$response['ItemInfo']['Features']['DisplayValues'],
                 'color' => null,
                 'price' => [
                     "currency" => @$response['Offers']['Listings'][0]['Price']['Currency'],

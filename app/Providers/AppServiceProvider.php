@@ -6,10 +6,12 @@ use App\Interfaces\ProviderInterface;
 use App\Models\Provider;
 use App\Services\AmazonNativeService;
 use App\Services\RainforestService;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -56,23 +58,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (request()->has('provider')){
-            switch (request()->get('provider')){
-                default:
-                case 'amazon_native':
-                    $this->app->bind(ProviderInterface::class,AmazonNativeService::class);
-                    break;
-                case 'rainforest':
-                    $this->app->bind(ProviderInterface::class,RainforestService::class);
-                    break;
-            }
-        }else{
-            if (Schema::hasTable('providers')){
-                $provider = DB::select(DB::raw('SELECT * FROM providers WHERE chance >= RAND() * 10 AND is_active = true ORDER BY chance ASC LIMIT 1'))[0];
-                if (@!$provider){
-                    $provider = Provider::where('is_active',true)->first();
-                }
-                switch (@$provider->name){
+        $this->app->booted(function () {
+            if (request()->has('provider') || request()->cookie('provider')){
+                switch (request()->get('provider') ?? request()->cookie('provider')){
                     default:
                     case 'amazon_native':
                         $this->app->bind(ProviderInterface::class,AmazonNativeService::class);
@@ -81,8 +69,26 @@ class AppServiceProvider extends ServiceProvider
                         $this->app->bind(ProviderInterface::class,RainforestService::class);
                         break;
                 }
+            }else{
+                if (Schema::hasTable('providers')){
+                    $provider = DB::select(DB::raw('SELECT * FROM providers WHERE chance >= RAND() * 10 AND is_active = true ORDER BY chance ASC LIMIT 1'))[0];
+                    if (@!$provider){
+                        $provider = Provider::where('is_active',true)->first();
+                    }
+                    switch (@$provider->name){
+                        default:
+                        case 'amazon_native':
+                            $this->app->bind(ProviderInterface::class,AmazonNativeService::class);
+                            break;
+                        case 'rainforest':
+                            $this->app->bind(ProviderInterface::class,RainforestService::class);
+                            break;
+                    }
+                }
             }
-        }
+        });
+
+
 
     }
 }

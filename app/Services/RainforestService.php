@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\ProviderInterface;
 use App\Models\Provider;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class RainforestService implements ProviderInterface
 {

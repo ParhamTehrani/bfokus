@@ -1,6 +1,18 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid d-grid justify-content-center align-self-center align-items-center py-5" tabindex="-1" >
+        <div class="d-flex justify-content-between">
+            <select class="form-control" name="provider" id="providerSelector">
+                <option value="">Select Provider</option>
+                <option value="rainforest" @if(request()->get('provider') == 'rainforest' || request()->cookie('provider') == 'rainforest') selected @endif>Rainforest</option>
+                <option value="amazon-native" @if(request()->get('provider') == 'amazon-native' || request()->cookie('provider') == 'amazon-native') selected @endif>Amazon</option>
+            </select>
+            <select class="form-control" name="language" id="languageSelector">
+                <option value="">Select Language</option>
+                <option value="en-US" @if(request()->get('lang') == 'en-US') selected @endif>English</option>
+                <option value="de-DE" @if(request()->get('lang') == 'de-DE') selected @endif>Germany</option>
+            </select>
+        </div>
         <div aria-label="Voice Search, w-tap and say what you want to search for" id="start" tabindex="1">
             <p style="color: white;text-align: center;font-size: 2rem;margin-bottom: 200px" tabindex="-1">Voice Search, w-tap and say what you want to search for</p>
 
@@ -36,16 +48,16 @@
             <h3 id="output" class="hide" style="color: white" tabindex="-1"></h3>
         </div>
 
-{{--        <button class="btn btn-success accept" disabled onclick="search()" tabindex="-1">Accept</button>--}}
+        {{--        <button class="btn btn-success accept" disabled onclick="search()" tabindex="-1">Accept</button>--}}
     </div>
 
 
 
 @endsection
 @if(request()->has('search'))
-@section('script')
-    <script>
-        $('#start').click()
-    </script>
-@endsection
+    @section('script')
+        <script>
+            $('#start').click()
+        </script>
+    @endsection
 @endif
