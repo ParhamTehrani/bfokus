@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Session;
 class RainforestService implements ProviderInterface
 {
     protected $provider;
+    protected $lang;
     public function __construct()
     {
         $this->provider = Provider::where('name','rainforest')->first();
+        $this->lang = Session::get('user_lang') ? (explode('-',Session::get('user_lang'))[0] == 'en' ? 'com' : 'de') : 'de';
     }
 
     public function search($search)
@@ -21,7 +23,7 @@ class RainforestService implements ProviderInterface
         $queryString = http_build_query([
             'api_key' => $this->provider->access_token,
             'type' => 'search',
-            'amazon_domain' => 'amazon.de',
+            'amazon_domain' => 'amazon.' . $this->lang,
             'refinements' => 'Reviews rating 4 and over',
             'search_term' => trim($search)
         ]);
@@ -64,7 +66,7 @@ class RainforestService implements ProviderInterface
     {
         $queryString = http_build_query([
             'api_key' => $this->provider->access_token,
-            'amazon_domain' => 'amazon.de',
+            'amazon_domain' => 'amazon.' . $this->lang,
             'refinements' => 'Reviews rating 4 and over',
             'asin' => $asin,
             'type' => 'product'

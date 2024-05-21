@@ -4,6 +4,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     const providerSelector = document.getElementById('providerSelector');
 
     function initializeRecognition(lang = 'en-US',provider = 'rainforest') {
+        console.log(lang)
         speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         speechRecognition.interimResults = true;
         speechRecognition.continuous = true;
@@ -50,6 +51,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         };
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        initializeRecognition(languageSelector.value , providerSelector.value);
+    });
+
     // Event listener for language and manual stop
     languageSelector.addEventListener('change', function() {
         if (speechRecognition) {
@@ -77,7 +82,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         }
     };
 
-    initializeRecognition(languageSelector.value , providerSelector.value);
+
+
 
 } else {
     console.log("Speech Recognition Not Available");

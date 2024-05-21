@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
     <div class="container-fluid d-grid justify-content-center align-self-center align-items-center py-5 px-5" >
-        <input type="hidden" name="page" value="1" id="page">
+        <input type="hidden" name="page" value="2" id="page">
         <a href="/?search" tabindex="1" aria-label="Voice search"  style="cursor: pointer;display: flex;justify-content: center;text-decoration: none;align-items: end;position: relative;
 }"  >
             <svg xmlns="http://www.w3.org/2000/svg" width="42" height="63" viewBox="0 0 42 63" fill="none" tabindex="-1">
@@ -16,7 +16,7 @@
 
 
         <div class="d-flex justify-content-center py-2" tabindex="1" id="data-result">
-            <p tabindex="-1" style="color: white">Below are the results for "{{ request()->route()->parameter('search') }}". Price range {{ $minPrice }} to {{ $maxPrice }} euros and {{ $minStar }} stars or more for the first
+            <p tabindex="-1" style="color: white">Below are the results for "{{ request()->route()->parameter('search') }}". Price range {{ $minPrice }} to {{ $maxPrice }} {{$symbol}} and {{ $minStar }} stars or more for the first
                 {{ count($products) }} products.</p>
         </div>
 
@@ -25,17 +25,20 @@
                 <a id="item-{{$key}}" class="items d-flex  @if($key == @$index-1) selected @endif" href="/product/{{ $product['asin'] }}" style="text-decoration: none" tabindex="0" aria-label="Item {{ $key+1 }} is {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format(@$products['price']['value'] ?? 0) }}">
                     <div tabindex="-1" >
                         <p style="color:white;" tabindex="-1" >
-                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is €{{ number_format(@$products['price']['value'] ?? 0) }}
+                            {{ $key+1 }}. {{ $product['title'] }} / Rate is {{ $product['rating'] }} of {{ $product['ratings_total']  }} reviews price is
+                            {{@$product['price']['raw'] ?? 0}}
                         </p>
                     </div>
                 </a>
             @endforeach
         </div>
 
-        <div style="display:grid;">
-            <button type="button" onclick="loadMore()" class="more-page btn ">Load 7 more products</button>
-            <a class="btn" href="/?search">Voice search another </a>
-        </div>
+            <div style="display:grid;">
+                @if($hasMore)
+                    <button type="button" onclick="loadMore()" class="more-page btn ">Load 7 more products</button>
+                @endif
+                <a class="btn" href="/?search">Voice search another </a>
+            </div>
     </div>
 @endsection
 @section('script')
@@ -65,13 +68,14 @@
                         let html = `<a id="item-${lastNo }" class="items d-flex " href="/product/${product.asin}" style="text-decoration: none" tabindex="0" aria-label="Item ${lastNo} is ${product.title} / Rate is ${product.rating} of ${ product.ratings_total } reviews price is €${ product.price.value }">
                                     <div tabindex="-1" >
                                         <p style="color:white;" tabindex="-1" >
-                                            ${lastNo + 1 }. ${product.title} / Rate is ${ product.rating } of ${ product.ratings_total } reviews price is €${ product.price.value }
+                                            ${lastNo + 1 }. ${product.title} / Rate is ${ product.rating } of ${ product.ratings_total } reviews price is ${ product.price.raw }
                                         </p>
                                     </div>
                                 </a>`
                         $('.pro-list').append(html)
                         lastNo++
                     })
+                    $('#page').val(parseInt($('#page').val()) + 1)
                     if(!data.more_page){
                         $('.more-page').hide()
                     }

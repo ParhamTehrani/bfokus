@@ -18,24 +18,24 @@ class ProductController extends Controller
 
     public function search($search)
     {
+        Session::put('user_lang',\request()->lang);
         return view("search-confirm",compact('search'));
-
     }
     public function search2(ProviderInterface $provider,$search)
     {
-        $products = Cache::get('provider_'. $provider->getProvider() . ': ' .$search);
+        $products = Session::get('provider_'. $provider->getProvider() . ': ' .$search);
         $index = null;
-
         if (@count(@$products ?? [])){
             if (\request()->has('index')){
                 $index = \request()->get('index');
             }
-            $products = $products;
             $maxPrice = max(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minPrice = min(count(array_filter(array_column($products,'price'))) > 0 ? array_column(array_filter(array_column($products,'price')),'value') : [0]);
             $minStar  = min(count(array_filter(array_column($products,'rating'))) > 0 ? array_filter(array_column($products,'rating')) : [0]);
+            $hasMore = count($products) > 7;
             $products = array_slice($products,0,7);
-            return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
+            $symbol = @$products[0]['price']['symbol'];
+            return view("list",compact('products','maxPrice','minPrice','minStar','search','index','hasMore','symbol'));
 
         }else{
             $last_search = Session::get('last_search_' . $provider->getProvider());
@@ -57,25 +57,26 @@ class ProductController extends Controller
                 $index = \request()->get('index');
             }
             if (count($products)){
-                Cache::put('provider_'. $provider->getProvider() . ': ' .$search,$products,60 * 60 * 1);
+                Session::put('provider_'. $provider->getProvider() . ': ' .$search,$products,60 * 60 * 1);
             }
+            $hasMore = count($products) > 7;
             $products = array_slice($products,0,7);
-
-            return view("list",compact('products','maxPrice','minPrice','minStar','search','index'));
+            $symbol = @$products[0]['price']['symbol'];
+            return view("list",compact('products','maxPrice','minPrice','minStar','search','index','hasMore','symbol'));
         }
     }
 
 
     public function search_page(Request $request,$search,ProviderInterface $provider)
     {
-        $products = Cache::get('provider_'. $provider->getProvider() . ': ' .$search);
+        $products = Session::get('provider_'. $provider->getProvider() . ': ' .$search);
         if ($search){
             if ($request->page){
                 $productsCount = @count($products);
-                $products = @array_slice($products,0 + (7 * $request->page),7);
+                $products = @array_slice($products,0 + (7 *( $request->page - 1)),7);
                 return response()->json([
                     'products' => $products,
-                    'more_page' => $productsCount > 6 + (7 * $request->page)
+                    'more_page' => $productsCount > 6 + (7 *( $request->page - 1))
                 ]);
             }else{
                 return response()->json([
@@ -94,7 +95,7 @@ class ProductController extends Controller
     public function one(ProviderInterface $provider,$asin)
     {
         $product_list = Session::get('last_list_' . $provider->getProvider());
-        $product_list = $product_list;
+        $providerName = $provider->getProvider();
         $product = $provider->one($asin);
         if (!$product){
             return redirect('/result/' . Session::get('last_search_' . $provider->getProvider()));
@@ -126,6 +127,7 @@ class ProductController extends Controller
             }
         }
 
-        return view('single-product',compact('product','index','product_list'));
+
+        return view('single-product',compact('product','index','product_list','providerName'));
     }
 }

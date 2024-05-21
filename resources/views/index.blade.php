@@ -57,7 +57,9 @@
 @if(request()->has('search'))
     @section('script')
         <script>
-            $('#start').click()
+            setTimeout(()=>{
+                $('#start').click()
+            },500)
         </script>
     @endsection
 @endif

@@ -9,13 +9,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class AmazonNativeService implements ProviderInterface
 {
     protected $provider;
+    protected $lang;
     public function __construct()
     {
         $this->provider = Provider::where('name','amazon_native')->first();
+        $this->lang = Session::get('user_lang') ? (explode('-',Session::get('user_lang'))[0] == 'en' ? 'com' : 'de') : 'de';
+
     }
 
     public function search($search)
@@ -107,8 +111,8 @@ class AmazonNativeService implements ProviderInterface
             "SearchIndex" => "All",
             "PartnerTag" => "cookwarespa0a-20",
             "PartnerType" => "Associates",
-            "ItemCount" => 10,
-            "LanguagesOfPreference" => ["en_US"],
+            "ItemCount" => 50,
+            "LanguagesOfPreference" => [Session::get('user_lang') ? str_replace('-','_',Session::get('user_lang'))  : 'de_DE'],
             "MinReviewsRating" => 4,
             "CurrencyOfPreference" => "EUR",
             "Marketplace" => "www.amazon.com"
@@ -405,6 +409,7 @@ class AmazonNativeService implements ProviderInterface
             ." \"PartnerType\": \"Associates\","
             ." \"Marketplace\": \"www.amazon.com\""
             ."}";
+
         $host="webservices.amazon.com";
         $uriPath="/paapi5/getvariations";
         $awsv4 = new AwsV4 ($accessKey, $secretKey);
