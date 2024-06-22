@@ -15,9 +15,14 @@
 
 
 
-        <div class="d-flex justify-content-center py-2" tabindex="1" id="data-result">
-            <p tabindex="-1" style="color: white">Below are the results for "{{ request()->route()->parameter('search') }}". Price range {{ $minPrice }} to {{ $maxPrice }} {{$symbol}} and {{ $minStar }} stars or more for the first
-                {{ count($products) }} products.</p>
+        <div class="d-grid text-white justify-content-center py-2" tabindex="1" id="data-result">
+            <p tabindex="-1" style="color: white">Here are the results for "{{ request()->route()->parameter('search') }}".
+                <ul>
+                    <li>Price range {{ $minPrice }} to {{ $maxPrice }} {{$symbol}}</li>
+                    <li>All products have {{ $minStar }} stars or more</li>
+                    <li>There are {{ count($products) }} products</li>
+                </ul>
+            </p>
         </div>
 
         <div class="d-grid justify-content-center py-2 pro-list">

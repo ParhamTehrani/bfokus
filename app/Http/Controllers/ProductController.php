@@ -104,7 +104,7 @@ class ProductController extends Controller
         if($product_list){
             foreach ($product_list as $key => $pr){
                 if ($pr['asin'] == @$asin){
-                    $index = $key;
+                    $index = $key + 1;
                 }
             }
             if (\request()->has('next')){
@@ -129,5 +129,21 @@ class ProductController extends Controller
 
 
         return view('single-product',compact('product','index','product_list','providerName'));
+    }
+
+    public function terms()
+    {
+        return view('terms');
+    }
+
+    public function policy()
+    {
+        return view('policy');
+    }
+
+    public function acceptTerms()
+    {
+        $cookie = cookie('terms', 'accept', 24 * 60 * 60);
+        return response('done')->cookie($cookie);
     }
 }

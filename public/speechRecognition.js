@@ -1,17 +1,17 @@
 if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     let speechRecognition;
-    const languageSelector = document.getElementById('languageSelector');
+    // const languageSelector = document.getElementById('languageSelector');
     const providerSelector = document.getElementById('providerSelector');
 
     function initializeRecognition(lang = 'en-US',provider = 'rainforest') {
-        console.log(lang)
+        // console.log(lang)
         speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         speechRecognition.interimResults = true;
         speechRecognition.continuous = true;
         speechRecognition.lang = lang;
 
         speechRecognition.onstart = () => {
-            console.log('start')
+            // console.log('start')
             $('.accept').attr("disabled", true);
             $('.mic-disactive').hide();
             $('.mic-active').show();
@@ -19,7 +19,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             $('#output').focus();
             $('.container-fluid').attr('tabindex','-1');
 
-            console.log('Recognition started');
+            // console.log('Recognition started');
         };
 
         speechRecognition.onerror = (event) => {
@@ -52,27 +52,27 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        initializeRecognition(languageSelector.value , providerSelector.value);
+        initializeRecognition('en-US' ,  'rainforest');
     });
 
     // Event listener for language and manual stop
-    languageSelector.addEventListener('change', function() {
-        if (speechRecognition) {
-            speechRecognition.stop();
-        }
-        initializeRecognition(this.value,providerSelector.value);
-    });
+    // languageSelector.addEventListener('change', function() {
+    //     if (speechRecognition) {
+    //         speechRecognition.stop();
+    //     }
+    //     initializeRecognition(this.value,providerSelector.value);
+    // });
 
     // Event listener for language and manual stop
     providerSelector.addEventListener('change', function() {
         if (speechRecognition) {
             speechRecognition.stop();
         }
-        initializeRecognition(languageSelector.value,this.value);
+        initializeRecognition('en-US',this.value);
     });
 
     document.getElementById('start').onclick = () => {
-        document.getElementById('output').innerHTML = "Say what you're looking for?";
+        document.getElementById('output').innerHTML = "Say what are you looking for?";
         speechRecognition.start();
     };
 

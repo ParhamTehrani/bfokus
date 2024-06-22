@@ -1,4 +1,10 @@
 @extends('layout')
+@section('title')
+    | Be Focus on Your Shopping
+@endsection
+@section('header')
+    <meta name="description" content="a free app, that connects blind and low-vision users to the Amazon store and makes online shopping simple">
+@endsection
 @section('content')
     <div class="container-fluid d-grid justify-content-center align-self-center align-items-center py-5" tabindex="-1" >
         <div class="d-flex justify-content-between">
@@ -7,14 +13,14 @@
                 <option value="rainforest" @if(request()->get('provider') == 'rainforest' || request()->cookie('provider') == 'rainforest') selected @endif>Rainforest</option>
                 <option value="amazon-native" @if(request()->get('provider') == 'amazon-native' || request()->cookie('provider') == 'amazon-native') selected @endif>Amazon</option>
             </select>
-            <select class="form-control" name="language" id="languageSelector">
-                <option value="">Select Language</option>
-                <option value="en-US" @if(request()->get('lang') == 'en-US') selected @endif>English</option>
-                <option value="de-DE" @if(request()->get('lang') == 'de-DE') selected @endif>Germany</option>
-            </select>
+{{--            <select class="form-control" name="language" id="languageSelector">--}}
+{{--                <option value="">Select Language</option>--}}
+{{--                <option value="en-US" @if(request()->get('lang') == 'en-US') selected @endif>English</option>--}}
+{{--                <option value="de-DE" @if(request()->get('lang') == 'de-DE') selected @endif>Germany</option>--}}
+{{--            </select>--}}
         </div>
-        <div aria-label="Voice Search, w-tap and say what you want to search for" id="start" tabindex="1">
-            <p style="color: white;text-align: center;font-size: 2rem;margin-bottom: 200px" tabindex="-1">Voice Search, w-tap and say what you want to search for</p>
+        <div aria-label="Tap on the screen and voice search on Amazon" id="start" tabindex="1">
+            <p style="color: white;text-align: center;font-size: 2rem;margin-bottom: 200px" tabindex="-1">Tap on the screen and voice search on Amazon</p>
 
             <div class="d-flex justify-content-center" tabindex="-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="150" viewBox="0 0 52 79" fill="none" class="mic-disactive" style="cursor: pointer">
