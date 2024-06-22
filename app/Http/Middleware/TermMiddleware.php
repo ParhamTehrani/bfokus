@@ -16,7 +16,7 @@ class TermMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ( request()->path() != 'accept-term' && \request()->path() != 'terms' && !@request()->cookie()['terms']){
+        if ( request()->path() != 'accept-term' && \request()->path() != 'terms' && \request()->path() != 'policy' && !@request()->cookie()['terms']){
             return redirect('/terms');
         }
         return $next($request);
