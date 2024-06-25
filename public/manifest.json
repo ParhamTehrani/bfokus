@@ -1,24 +1,24 @@
 {
-    "theme_color": "#8936FF",
-    "background_color": "#2EC6FE",
+    "theme_color": "#2EC6FE",
+    "background_color": "#000000",
     "orientation": "any",
     "display": "standalone",
     "dir": "auto",
     "lang": "en-US",
     "name": "Bfokus",
     "short_name": "Bfokus",
-    "start_url": "https://amazon.parhamtehrani.ir/",
+    "start_url": "https://app.bfokus.de/",
     "scope": "/",
     "description": "Bfokus",
     "id": "Bfokus",
     "icons": [
         {
-            "src": "/512x512.png",
+            "src": "/pwa/appstore.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "/512x512.png",
+            "src": "/pwa/appstore.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
